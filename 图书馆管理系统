@@ -1,0 +1,2031 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<fstream>
+#include<atlstr.h>
+#include<windows.h>
+#include<time.h>
+using namespace std;
+#define _AFXDLL
+void gettime(string &str)
+{
+	
+	SYSTEMTIME sys;
+	GetLocalTime(&sys);
+	//string time(sys.wYear);
+	//cout << time;
+	//printf("%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds, sys.wDayOfWeek);
+	CString cstr;
+	cstr.Format(L"%4d/%02d/%02d-%02d:%02d:%02d.%03d", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds);
+	USES_CONVERSION;
+	//cstr = _T("kjdsaflkjdlfkj");
+	char* s_char = W2A(cstr);
+	str = s_char;
+}
+class Book
+{
+	//1 TB 一般工业技术
+	//2 TD 矿业工程
+	//3 TE 石油
+	//4 天然气工程
+	//5 TF 金属工业
+	//6 TG 金属学
+	//7 TH 机械
+	//8 武器工业
+	//9 动力工业
+	//10 TL 原子能技术
+	//11 TM 电工技术
+	//12 TN 无线电子学
+	//13 通信技术
+	//14 TP 自动化技术
+	//15 计算技术 
+private:
+	int BookID;
+	string BookCategory;
+	string BookName;
+	string BookAuthor;
+	string BookPublishingCompany;
+	string BookPublicationDate;
+	string BookISBN;
+	string BookEdition;
+	double BookPrice;
+	int BookNumber;
+	int BookLoanNumber;
+	int BookOrderNumber;
+	int BookFreeNumber;
+	string Borrowedpreson[10];
+	string Orderperson[10];
+public:
+
+	void ReadBooksFile(Book *&BookHead);
+	void WriteToBooks(Book *BookHead);
+	void InsertFront(Book *&BookHead, Book *&p);
+	void InsertBack(Book *&BookHead, Book *&p);
+	void InsertBook(Book *&BookHead);
+	void ModificationBook(Book *BookHead);
+	void DeleteBook(Book *BookHead);
+	void ShowBook(Book *BookHead);
+	void ProduceVariety(Book *&BookHead);
+	Book* SearchBook(Book *BookHead, string BookName);
+	void BorrowBook(Book *BookHead,string &username);
+	Book *next;
+	Book *NextVariety;
+};
+void Book::InsertFront(Book *&BookHead, Book *&p)
+{
+	p->next = BookHead;
+	BookHead = p;
+}
+void Book::InsertBack(Book *&BookHead, Book *&p)
+{
+	p->next = BookHead->next;
+	BookHead->next = p;
+
+}
+void Book::InsertBook(Book *&BookHead)
+{
+	Book *ptr, *head = BookHead;
+	cout << "您要增加那种种类的书" << endl;
+	cout << "1 TB工业设计" << '\t' << "2 TD矿业工程" << '\t' << "3 TE石油" << endl;
+	cout << "4 天然气工业" << '\t' << "5 TF金工业" << '\t' << "6 TG金属学" << endl;
+	cout << "7 TH机械" << '\t' << "8 TJ武器工业" << '\t' << "9 TK动力工业" << endl;
+	cout << "10 TL原子能技术" << '\t' << "11 TM电工技术" << '\t' << "12 TN无线电电子学" << endl;
+	cout << "13 通信技术" << '\t' << "14 TP自动化技术" << '\t' << "15 计算技术" << endl;
+
+	int a;
+	cin >> a;
+	if (a == 1)
+	{
+		ptr = new Book();
+		ptr->BookID = 1;
+		ptr->BookCategory = "TB工业设计";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		ptr->Borrowedpreson[0] = "无人";
+		ptr->Orderperson[0] = "无人";
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 2)
+	{
+		for (int i = 0;i < 1;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 2;
+		ptr->BookCategory = "TD矿业工程";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		ptr->Borrowedpreson[0] = "无人";
+		ptr->Orderperson[0] = "无人";
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 3)
+	{
+		for (int i = 0;i < 2;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 3;
+		ptr->BookCategory = "TE石油";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		ptr->Borrowedpreson[0] = "无人";
+		ptr->Orderperson[0] = "无人";
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	/*else if (a == 4)
+	{
+		for (int i = 0;i < 3;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 4;
+		ptr->BookCategory = "天然气工业";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 5)
+	{
+		for (int i = 0;i < 2;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 5;
+		ptr->BookCategory = "TF金工业";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 6)
+	{
+		for (int i = 0;i < 5;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 6;
+		ptr->BookCategory = "TG金属学";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 7)
+	{
+		for (int i = 0;i < 6;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 7;
+		ptr->BookCategory = "TH机械";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 8)
+	{
+		for (int i = 0;i < 7;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 8;
+		ptr->BookCategory = "TJ武器工业";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 9)
+	{
+		for (int i = 0;i < 8;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 9;
+		ptr->BookCategory = "TK动力工业";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 10)
+	{
+		for (int i = 0;i < 9;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 10;
+		ptr->BookCategory = "TL原子能技术";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 11)
+	{
+		for (int i = 0;i < 10;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 11;
+		ptr->BookCategory = "TM电工技术";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 12)
+	{
+		for (int i = 0;i < 11;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 12;
+		ptr->BookCategory = "TN无线电子学";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 13)
+	{
+		for (int i = 0;i < 12;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 13;
+		ptr->BookCategory = "通信技术";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 14)
+	{
+		for (int i = 0;i < 13;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 14;
+		ptr->BookCategory = "TP自动化技术";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}
+	else if (a == 15)
+	{
+		for (int i = 0;i < 14;i++)
+		{
+			BookHead = BookHead->NextVariety;
+		}
+		ptr = new Book();
+		ptr->BookID = 15;
+		ptr->BookCategory = "计算技术";
+		cout << "请输入图书的名字：" << endl;
+		cin >> ptr->BookName;
+		cout << "请输入图书的作者：" << endl;
+		cin >> ptr->BookAuthor;
+		cout << "请输入图书的出版社：" << endl;
+		cin >> ptr->BookPublishingCompany;
+		cout << "请输入图书的出版日期：" << endl;
+		cin >> ptr->BookPublicationDate;
+		cout << "请输入图书的ISBN：" << endl;
+		cin >> ptr->BookISBN;
+		cout << "请输入图书的版本号：" << endl;
+		cin >> ptr->BookEdition;
+		cout << "请输入图书的价格：" << endl;
+		cin >> ptr->BookPrice;
+		cout << "请输入图书的数量：" << endl;
+		cin >> ptr->BookNumber;
+		ptr->Borrowedpreson = "无人";
+		ptr->BookLoanNumber = 0;
+		ptr->BookOrderNumber = 0;
+		ptr->BookFreeNumber = ptr->BookNumber;
+		InsertBack(BookHead, ptr);
+		BookHead = head;
+	}*/
+	else
+	{
+		cout << "您输入错误请重新输入" << endl;
+	}
+
+}
+void Book::ModificationBook(Book *BookHead)
+{
+	cout << "你想要对哪本图书进行修改？" << endl;
+	cout << "1 搜索书名" << '\t' << "2 中图分类号查找" << '\t' << "3 查看所有图书" << endl;
+	int choose;
+	cin >> choose;
+	if (choose == 1)
+	{
+		cout << "请输入书名" << endl;
+		string bookname;
+		cin >> bookname;
+		Book *ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr != NULL)
+		{
+			cout << "你想要修改什么信息？" << endl;
+			cout << "1 图书编号" << "\t" << "2 总共书的书目" << endl;
+			int status;
+			cin >> status;
+			if (status == 1)
+			{
+				cout << "现在的图书编号为：" << endl;
+				cout << ptr->BookID << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookID = a;
+				cout << "修改成功" << endl;
+			}
+			else 
+			{
+				cout << "现在该图书的数目为：" << endl;
+				cout << ptr->BookNumber << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookNumber = a;
+				cout << "修改成功" << endl;
+			}
+		}
+		else
+		{
+			cout << "请重新输入：" << endl;
+		}
+		
+
+	}
+	else if (choose == 2)
+	{
+		Book *pptr = BookHead;
+		cout << "你要借哪一类图书？" << endl;
+		cout << "请选择已有书类" << endl;
+		cout << "1 TB工业设计" << '\t' << "2 TD矿业工程" << '\t' << "3 TE石油" << endl;
+		cout << "4 天然气工业" << '\t' << "5 TF金工业" << '\t' << "6 TG金属学" << endl;
+		cout << "7 TH机械" << '\t' << "8 TJ武器工业" << '\t' << "9 TK动力工业" << endl;
+		cout << "10 TL原子能技术" << '\t' << "11 TM电工技术" << '\t' << "12 TN无线电电子学" << endl;
+		cout << "13 通信技术" << '\t' << "14 TP自动化技术" << '\t' << "15 计算技术" << endl;
+		int status;
+		cin >> status;
+		for (int i = 0;i < status;i++)
+			BookHead = BookHead->NextVariety;
+
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			cout << BookHead->BookName << endl;
+			BookHead = BookHead->next;
+		}
+		BookHead = pptr;
+		cout << "你想要修改那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		Book *ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr != NULL)
+		{
+			cout << "你想要修改什么信息？" << endl;
+			cout << "1 图书编号" << "\t" << "2 总共书的书目" << endl;
+			int status;
+			cin >> status;
+			if (status == 1)
+			{
+				cout << "现在的图书编号为：" << endl;
+				cout << ptr->BookID << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookID = a;
+				cout << "修改成功" << endl;
+			}
+			else
+			{
+				cout << "现在该图书的数目为：" << endl;
+				cout << ptr->BookNumber << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookNumber = a;
+				cout << "修改成功" << endl;
+			}
+		}
+		else
+		{
+			cout << "请重新输入：" << endl;
+		}
+	}
+	else
+	{
+		Book *pptr = BookHead;
+		Book *head = BookHead;
+		for (int i = 0;i < 3;i++)
+		{
+			BookHead = BookHead->next;
+			while (BookHead != NULL)
+			{
+				cout << BookHead->BookName << endl;
+				BookHead = BookHead->next;
+				cout << endl;
+			}
+			head = head->NextVariety;
+			BookHead = head;
+		}
+		BookHead = pptr;
+		cout << "你想要借那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		Book *ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr != NULL)
+		{
+			cout << "你想要修改什么信息？" << endl;
+			cout << "1 图书编号" << "\t" << "2 总共书的书目" << endl;
+			int status;
+			cin >> status;
+			if (status == 1)
+			{
+				cout << "现在的图书编号为：" << endl;
+				cout << ptr->BookID << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookID = a;
+				cout << "修改成功" << endl;
+			}
+			else
+			{
+				cout << "现在该图书的数目为：" << endl;
+				cout << ptr->BookNumber << endl;
+				cout << "你想修改为？" << '\n' << "请输入：" << endl;
+				int a;
+				cin >> a;
+				ptr->BookNumber = a;
+				cout << "修改成功" << endl;
+			}
+		}
+		else
+		{
+			cout << "请重新输入：" << endl;
+		}
+	}
+	
+
+
+
+}
+void Book::ReadBooksFile(Book *&BookHead)
+{
+	fstream BooksIn("D:\\LibraryManagementSystem\\books.txt", ios::in);
+	if (!BooksIn)
+	{
+		cout << "file not found" << endl;
+	}
+	else
+	{
+		int  Variety;
+		Book *head;
+		head = BookHead;
+		Book *ptr;
+		while (!BooksIn.eof())
+		{
+			BooksIn >> Variety;
+			switch (Variety)
+			{
+			case 1:
+			{
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				for (int i = 0;i <=ptr-> BookLoanNumber;i++)
+				{
+					BooksIn >> ptr->Borrowedpreson[i];
+				}
+				for (int i = 0;i <= ptr->BookOrderNumber;i++)
+				{
+					BooksIn >> ptr->Orderperson[i];
+				}
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				break;
+			}
+			case 2:
+			{
+				for (int i = 0;i < 1;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				for (int i = 0;i <= ptr->BookLoanNumber;i++)
+				{
+					BooksIn >> ptr->Borrowedpreson[i];
+				}
+				for (int i = 0;i <= ptr->BookOrderNumber;i++)
+				{
+					BooksIn >> ptr->Orderperson[i];
+				}
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 3:
+			{
+				for (int i = 0;i < 2;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				for (int i = 0;i <= ptr->BookLoanNumber;i++)
+				{
+					BooksIn >> ptr->Borrowedpreson[i];
+				}
+				for (int i = 0;i <= ptr->BookOrderNumber;i++)
+				{
+					BooksIn >> ptr->Orderperson[i];
+				}
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			/*case 4:
+			{
+				for (int i = 0;i < 3;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 5:
+			{
+				for (int i = 0;i < 4;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 6:
+			{
+				for (int i = 0;i < 5;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 7:
+			{
+				for (int i = 0;i < 6;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 8:
+			{
+				for (int i = 0;i < 7;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 9:
+			{
+				for (int i = 0;i < 8;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 10:
+			{
+				for (int i = 0;i < 9;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 11:
+			{
+				for (int i = 0;i < 10;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 12:
+			{
+				for (int i = 0;i < 11;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 13:
+			{
+				for (int i = 0;i < 12;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 14:
+			{
+				for (int i = 0;i < 13;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}
+			case 15:
+			{
+				for (int i = 0;i < 14;i++)
+				{
+					BookHead = BookHead->NextVariety;
+				}
+				ptr = new Book();
+				BooksIn >> ptr->BookID;
+				BooksIn >> ptr->BookCategory;
+				BooksIn >> ptr->BookName;
+				BooksIn >> ptr->BookAuthor;
+				BooksIn >> ptr->BookPublishingCompany;
+				BooksIn >> ptr->BookPublicationDate;
+				BooksIn >> ptr->BookISBN;
+				BooksIn >> ptr->BookEdition;
+				BooksIn >> ptr->BookPrice;
+				BooksIn >> ptr->BookNumber;
+				BooksIn >> ptr->BookLoanNumber;
+				BooksIn >> ptr->BookOrderNumber;
+				BooksIn >> ptr->BookFreeNumber;
+				InsertBack(BookHead, ptr);
+				BookHead = head;
+				break;
+			}*/
+			}
+		}
+
+	}
+}
+void Book::WriteToBooks(Book *BookHead)
+{
+	fstream BooksOut("D:\\LibraryManagementSystem\\books.txt", ios::out);
+	//BookHead = BookHead->NextVariety;
+	Book *head = BookHead;
+	for (int i = 0;i < 2;i++)
+	{
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			if (BookHead->BookID == 1)
+			{
+				BooksOut << 1 << endl;
+			}
+			else if (BookHead->BookID == 2)
+			{
+				BooksOut << 2 << endl;
+			}
+			else if (BookHead->BookID == 3)
+			{
+				BooksOut << 3 << endl;
+			}
+			/*else if (BookHead->BookID == 4)
+			{
+				BooksOut << 4 << endl;
+			}
+			else if (BookHead->BookID == 5)
+			{
+				BooksOut << 5 << endl;
+			}
+			else if (BookHead->BookID == 6)
+			{
+				BooksOut << 6 << endl;
+			}
+			else if (BookHead->BookID == 7)
+			{
+				BooksOut << 7 << endl;
+			}
+			else if (BookHead->BookID == 7)
+			{
+				BooksOut << 7 << endl;
+			}
+			else if (BookHead->BookID == 8)
+			{
+				BooksOut << 8 << endl;
+			}
+			else if (BookHead->BookID == 9)
+			{
+				BooksOut << 9 << endl;
+			}
+			else if (BookHead->BookID == 10)
+			{
+				BooksOut << 10 << endl;
+			}
+			else if (BookHead->BookID == 11)
+			{
+				BooksOut << 11 << endl;
+			}
+			else if (BookHead->BookID == 12)
+			{
+				BooksOut << 12 << endl;
+			}
+			else if (BookHead->BookID == 13)
+			{
+				BooksOut << 13 << endl;
+			}
+			else if (BookHead->BookID == 14)
+			{
+				BooksOut << 14 << endl;
+			}
+			else if (BookHead->BookID == 15)
+			{
+				BooksOut << 15 << endl;
+			}*/
+			else
+			{
+				cout << "输入错误请重新输入" << endl;
+			}
+			BooksOut << BookHead->BookID << endl;
+			BooksOut << BookHead->BookCategory << endl;
+			BooksOut << BookHead->BookName << endl;
+			BooksOut << BookHead->BookAuthor << endl;
+			BooksOut << BookHead->BookPublishingCompany << endl;
+			BooksOut << BookHead->BookPublicationDate << endl;
+			BooksOut << BookHead->BookISBN << endl;
+			BooksOut << BookHead->BookEdition << endl;
+			BooksOut << BookHead->BookPrice << endl;
+			BooksOut << BookHead->BookNumber << endl;
+			BooksOut << BookHead->BookLoanNumber << endl;
+			BooksOut << BookHead->BookOrderNumber << endl;
+			for (int i = 0;i <= BookHead->BookLoanNumber;i++)
+			{
+				BooksOut << BookHead->Borrowedpreson[i] << endl;
+			}
+			for (int i = 0;i <= BookHead->BookOrderNumber;i++)
+			{
+				BooksOut << BookHead->Orderperson[i] << endl;
+			}
+			BooksOut << BookHead->BookFreeNumber << endl;
+			BookHead = BookHead->next;
+		}
+		head = head->NextVariety;
+		BookHead = head;
+	}
+	BookHead = BookHead->next;
+	if (BookHead != NULL)
+	{
+		while (BookHead->next != NULL)
+		{
+			if (BookHead->BookID == 1)
+			{
+				BooksOut << 1 << endl;
+			}
+			else if (BookHead->BookID == 2)
+			{
+				BooksOut << 2 << endl;
+			}
+			else if (BookHead->BookID == 3)
+			{
+				BooksOut << 3 << endl;
+			}
+		/*	else if (BookHead->BookID == 4)
+			{
+				BooksOut << 4 << endl;
+			}
+			else if (BookHead->BookID == 5)
+			{
+				BooksOut << 5 << endl;
+			}
+			else if (BookHead->BookID == 6)
+			{
+				BooksOut << 6 << endl;
+			}
+			else if (BookHead->BookID == 7)
+			{
+				BooksOut << 7 << endl;
+			}
+			else if (BookHead->BookID == 7)
+			{
+				BooksOut << 7 << endl;
+			}
+			else if (BookHead->BookID == 8)
+			{
+				BooksOut << 8 << endl;
+			}
+			else if (BookHead->BookID == 9)
+			{
+				BooksOut << 9 << endl;
+			}
+			else if (BookHead->BookID == 10)
+			{
+				BooksOut << 10 << endl;
+			}
+			else if (BookHead->BookID == 11)
+			{
+				BooksOut << 11 << endl;
+			}
+			else if (BookHead->BookID == 12)
+			{
+				BooksOut << 12 << endl;
+			}
+			else if (BookHead->BookID == 13)
+			{
+				BooksOut << 13 << endl;
+			}
+			else if (BookHead->BookID == 14)
+			{
+				BooksOut << 14 << endl;
+			}
+			else if (BookHead->BookID == 15)
+			{
+				BooksOut << 15 << endl;
+			}*/
+			else
+			{
+				cout << "输入错误请重新输入" << endl;
+			}
+			BooksOut << BookHead->BookID << endl;
+			BooksOut << BookHead->BookCategory << endl;
+			BooksOut << BookHead->BookName << endl;
+			BooksOut << BookHead->BookAuthor << endl;
+			BooksOut << BookHead->BookPublishingCompany << endl;
+			BooksOut << BookHead->BookPublicationDate << endl;
+			BooksOut << BookHead->BookISBN << endl;
+			BooksOut << BookHead->BookEdition << endl;
+			BooksOut << BookHead->BookPrice << endl;
+			BooksOut << BookHead->BookNumber << endl;
+			BooksOut << BookHead->BookLoanNumber << endl;
+			BooksOut << BookHead->BookOrderNumber << endl;
+			for (int i = 0;i <= BookHead->BookLoanNumber;i++)
+			{
+				BooksOut << BookHead->Borrowedpreson[i] << endl;
+			}
+			for (int i = 0;i <= BookHead->BookOrderNumber;i++)
+			{
+				BooksOut << BookHead->Orderperson[i] << endl;
+			}
+			BooksOut << BookHead->BookFreeNumber << endl;
+			BookHead = BookHead->next;
+		}
+		if (BookHead != NULL)
+		{
+			BooksOut << 3 << endl;
+			BooksOut << BookHead->BookID << endl;
+			BooksOut << BookHead->BookCategory << endl;
+			BooksOut << BookHead->BookName << endl;
+			BooksOut << BookHead->BookAuthor << endl;
+			BooksOut << BookHead->BookPublishingCompany << endl;
+			BooksOut << BookHead->BookPublicationDate << endl;
+			BooksOut << BookHead->BookISBN << endl;
+			BooksOut << BookHead->BookEdition << endl;
+			BooksOut << BookHead->BookPrice << endl;
+			BooksOut << BookHead->BookNumber << endl;
+			BooksOut << BookHead->BookLoanNumber << endl;
+			BooksOut << BookHead->BookOrderNumber << endl;
+			for (int i = 0;i <= BookHead->BookLoanNumber;i++)
+			{
+				BooksOut << BookHead->Borrowedpreson[i] << endl;
+			}
+			for (int i = 0;i <= BookHead->BookOrderNumber;i++)
+			{
+				BooksOut << BookHead->Orderperson[i] << endl;
+			}
+			BooksOut << BookHead->BookFreeNumber;
+			BookHead = BookHead->next;
+			//head = head->NextVariety;
+			//BookHead = head;
+		}
+	}
+}
+void Book::ShowBook(Book *BookHead) //13个属性
+{
+	Book *head = BookHead;
+	for (int i = 0;i < 3;i++)
+	{
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			cout << BookHead->BookID << endl;
+			cout << BookHead->BookCategory << endl;
+			cout << BookHead->BookName << endl;
+			cout << BookHead->BookAuthor << endl;
+			cout << BookHead->BookPublishingCompany << endl;
+			cout << BookHead->BookPublicationDate << endl;
+			cout << BookHead->BookISBN << endl;
+			cout << BookHead->BookEdition << endl;
+			cout << BookHead->BookPrice << endl;
+			cout << BookHead->BookNumber << endl;
+			cout << BookHead->BookLoanNumber << endl;
+			cout << BookHead->BookOrderNumber << endl;
+			cout << BookHead->BookFreeNumber << endl;
+			for (int i = 1;i <= BookHead->BookLoanNumber;i++)
+			{
+				cout << BookHead->Borrowedpreson[i] << endl;
+			}
+			BookHead = BookHead->next;
+			cout << "                    " << endl;
+		}
+		head = head->NextVariety;
+		BookHead = head;
+
+	}
+}
+void Book::ProduceVariety(Book *&BookHead)
+{
+	//Book *a;
+	//a = BookHead;
+	for (int i = 0;i < 3;i++)
+	{
+		Book *h;
+		h = new Book();
+		h->NextVariety = BookHead;
+		BookHead = h;
+		BookHead->next = NULL;
+	}
+	//BookHead = a;
+
+	//BookHead = BookHead->NextVariety;
+}
+Book* Book::SearchBook(Book *BookHead, string Name)
+{
+	Book *head = BookHead;	
+	for (int i = 0;i < 3;i++)
+	{
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			if (BookHead->BookName == Name)
+			{
+				cout << BookHead->BookName;
+				return BookHead;
+			}
+			BookHead = BookHead->next;
+		}
+		head = head->NextVariety;
+		BookHead = head;
+
+	}
+	cout << "没有这个名字的图书" << endl;
+	 BookHead=NULL;
+	 return BookHead;
+}
+void Book::BorrowBook(Book *BookHead,string &username)
+{
+	string str,date;
+	gettime(date);
+	str = username + date;
+	//cout << "您还能借" << head->UserMaxLoanNum << "本书" << endl;
+	cout << "你想要用那种方式借书?" << endl;
+	cout << "1 搜索书名" << '\t' << "2 中图分类号查找" << '\t' << "3 查看所有图书" << endl;
+	int choose;
+	cin >> choose;
+	if (choose == 1)
+	{
+		cout << "请输入书名" << endl;
+		string bookname;
+		cin >> bookname;
+		Book *ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr->BookFreeNumber > 0)
+		{
+			++ptr->BookLoanNumber;
+			--ptr->BookFreeNumber;
+			ptr->Borrowedpreson[ptr->BookLoanNumber] = str;
+			cout << "借书成功" << endl;
+		}
+		else
+		{
+			cout << "此书已经被借完" << endl;
+		}
+
+	}
+	else if (choose == 2)
+	{
+		Book *ptr = BookHead;
+		cout << "你要借哪一类图书？" << endl;
+		cout << "请选择已有书类" << endl;
+		cout << "1 TB工业设计" << '\t' << "2 TD矿业工程" << '\t' << "3 TE石油" << endl;
+		cout << "4 天然气工业" << '\t' << "5 TF金工业" << '\t' << "6 TG金属学" << endl;
+		cout << "7 TH机械" << '\t' << "8 TJ武器工业" << '\t' << "9 TK动力工业" << endl;
+		cout << "10 TL原子能技术" << '\t' << "11 TM电工技术" << '\t' << "12 TN无线电电子学" << endl;
+		cout << "13 通信技术" << '\t' << "14 TP自动化技术" << '\t' << "15 计算技术" << endl;
+		int status;
+		cin >> status;
+		for (int i = 0;i < status;i++)
+			BookHead = BookHead->NextVariety;
+		
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			cout << BookHead->BookName<<endl;
+			BookHead = BookHead->next;
+		}
+		BookHead = ptr;
+		cout << "你想要借那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr->BookFreeNumber > 0)
+		{
+			++ptr->BookLoanNumber;
+			--ptr->BookFreeNumber;
+			ptr->Borrowedpreson[ptr->BookLoanNumber] = str;
+			cout << "借书成功" << endl;
+		}
+		else
+		{
+			cout << "此书已经被借完" << endl;
+		}
+	}
+	else
+	{
+		Book *ptr=BookHead;
+		Book *head = BookHead;
+		for (int i = 0;i < 3;i++)
+		{
+			BookHead = BookHead->next;
+			while (BookHead != NULL)
+			{
+				cout << BookHead->BookName << endl;
+				BookHead = BookHead->next;
+				cout <<endl;
+			}
+			head = head->NextVariety;
+			BookHead = head;
+		}
+		BookHead = ptr;
+		cout << "你想要借那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr->BookFreeNumber > 0)
+		{
+			++ptr->BookLoanNumber;
+			--ptr->BookFreeNumber;
+			ptr->Borrowedpreson[ptr->BookLoanNumber] = str;
+			cout << "借书成功" << endl;
+		}
+		else
+		{
+			cout << "此书已经被借完" << endl;
+		}
+	}
+}
+void Book::DeleteBook(Book *BookHead)
+{
+	cout << "请选择图书?" << endl;
+	cout << "1 搜索书名" << '\t' << "2 中图分类号查找" << '\t' << "3 查看所有图书" << endl;
+	int choose;
+	cin >> choose;
+	if (choose == 1)
+	{
+		cout << "请输入书名" << endl;
+		string bookname;
+		cin >> bookname;
+		Book *head = BookHead;
+		Book *Found = NULL;
+		for (int i = 0;i < 3;i++)
+		{
+			if (BookHead->next != NULL)
+			{
+				if (BookHead->next->BookName == bookname)
+				{
+					cout << "已找到图书：" << BookHead->next->BookName << endl;
+					Found = BookHead;
+					break;
+				}
+				BookHead = BookHead->next;
+			}
+			else
+			{
+				break;
+			}
+			head = head->NextVariety;
+			BookHead = head;
+		}
+		if (Found != NULL)
+		{
+			Book *WantDelete = Found->next;
+			Found->next = WantDelete->next;
+			delete WantDelete;
+		}
+		else
+		{
+			cout << "没有找到这本书" << endl;
+		}
+
+	}
+	/*else if (choose == 2)
+	{
+		Book *ptr = BookHead;
+		cout << "你要借哪一类图书？" << endl;
+		cout << "请选择已有书类" << endl;
+		cout << "1 TB工业设计" << '\t' << "2 TD矿业工程" << '\t' << "3 TE石油" << endl;
+		cout << "4 天然气工业" << '\t' << "5 TF金工业" << '\t' << "6 TG金属学" << endl;
+		cout << "7 TH机械" << '\t' << "8 TJ武器工业" << '\t' << "9 TK动力工业" << endl;
+		cout << "10 TL原子能技术" << '\t' << "11 TM电工技术" << '\t' << "12 TN无线电电子学" << endl;
+		cout << "13 通信技术" << '\t' << "14 TP自动化技术" << '\t' << "15 计算技术" << endl;
+		int status;
+		cin >> status;
+		for (int i = 0;i < status;i++)
+			BookHead = BookHead->NextVariety;
+
+		BookHead = BookHead->next;
+		while (BookHead != NULL)
+		{
+			cout << BookHead->BookName << endl;
+			BookHead = BookHead->next;
+		}
+		BookHead = ptr;
+		cout << "你想要借那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr->BookFreeNumber > 0)
+		{
+			++ptr->BookLoanNumber;
+			--ptr->BookFreeNumber;
+			ptr->Borrowedpreson[ptr->BookLoanNumber] = str;
+			cout << "借书成功" << endl;
+		}
+		else
+		{
+			cout << "此书已经被借完" << endl;
+		}
+	}
+	else
+	{
+		Book *ptr = BookHead;
+		Book *head = BookHead;
+		for (int i = 0;i < 3;i++)
+		{
+			BookHead = BookHead->next;
+			while (BookHead != NULL)
+			{
+				cout << BookHead->BookName << endl;
+				BookHead = BookHead->next;
+				cout << endl;
+			}
+			head = head->NextVariety;
+			BookHead = head;
+		}
+		BookHead = ptr;
+		cout << "你想要借那本书？请输入书名：" << endl;
+		string bookname;
+		cin >> bookname;
+		ptr = new Book();
+		ptr = SearchBook(BookHead, bookname);
+		if (ptr->BookFreeNumber > 0)
+		{
+			++ptr->BookLoanNumber;
+			--ptr->BookFreeNumber;
+			ptr->Borrowedpreson[ptr->BookLoanNumber] = str;
+			cout << "借书成功" << endl;
+		}
+		else
+		{
+			cout << "此书已经被借完" << endl;
+		}
+	}*/
+}
+
+//next is people
+class User
+{
+private:
+
+protected:
+	int  UserMaxLoanNum;
+	int UserBorrowNum;
+	string UserName;
+	string UserDepartment;
+	string UserClass;
+	string BorrowedBook;
+public:
+	Book *BookHead;
+	void ReadReaderFile(User *&UserHead);
+	void ShowUser(User *UserHead);
+	void ProduceClass(User *&UserHead);
+	void InsertUser(User *& UserHead);
+	void WriteToReader(User *UserHead);
+	void BorrowBook(User *&UserHead);
+	void Carry(User *&UserHead);
+	//void LogIn();
+	User *next;
+	User *NextClass;
+};
+class StudentUser :public User
+{
+private:
+
+public:
+	void regist(StudentUser *head)
+	{
+
+	}
+	//StudentUser *NextClass;
+};
+class TeacherUser :public User
+{
+
+	//TeacherUser *nextClass;
+};
+class Administrator :public TeacherUser
+{
+
+	//Administrator *NextClass;
+};
+void InsertBack(User *&UserHead,User *&p)
+{
+	p->next = UserHead->next;
+	UserHead->next = p;
+
+}
+void InsertFront(User *&UserHead, User *&p)
+{
+	p->next = UserHead;
+	UserHead = p;
+}
+void User::InsertUser(User *& UserHead)
+{
+	User *head = UserHead;
+	User *ptr;
+	int i = 0;
+	cout << "---------------------------" << endl;
+	cout << "|" << "    1 注册学生            " << "|" << endl;
+	cout << "|" << "    2 注册老师            " << "|" << endl;
+	cout << "|" << "    3 注册管理员          " << "|" << endl;
+	cout << "---------------------------" << endl;
+	cin >> i;
+	int j = 1;
+	while (j)
+	{
+		switch (i)
+		{
+
+		case 1:
+		{
+			ptr = new StudentUser();
+			ptr->UserMaxLoanNum = 4;
+			cout << "请输入您的姓名" << endl;
+			cin >> ptr->UserName;
+			ptr->UserBorrowNum = 0;
+			cout << "请输入您的学校" << endl;
+			cin >> ptr->UserDepartment;
+			ptr->UserClass = "本科生";
+			InsertBack(UserHead, ptr);
+			UserHead = head;
+			j = 0;
+			break;
+		}
+		case 2:
+		{
+			UserHead = UserHead->NextClass;
+			ptr = new TeacherUser();
+			ptr->UserMaxLoanNum = 100;
+			cout << "请输入老师您的姓名" << endl;
+			cin >> ptr->UserName;
+			ptr->UserBorrowNum = 0;
+			cout << "请输入老师您的单位" << endl;
+			cin >> ptr->UserDepartment;
+			ptr->UserClass = "教师";
+			InsertBack(UserHead, ptr);
+			UserHead = head;
+			j = 0;
+			break;
+		}
+		case 3:
+		{
+			UserHead = UserHead->NextClass;
+			UserHead = UserHead->NextClass;
+			ptr = new TeacherUser();
+			ptr->UserMaxLoanNum = 100;
+			ptr->UserBorrowNum=0;
+			cout << "请输入管理员您的姓名" << endl;
+			cin >> ptr->UserName;
+			//cout << "请输入管理员您的单位" << endl;
+			ptr->UserDepartment="内蒙古大学";
+			ptr->UserClass = "系统管理员";	
+			InsertBack(UserHead, ptr);
+			UserHead = head;
+			j = 0;
+			break;
+		}
+	defult:
+		{
+			cout << "您输入错误请重新输入";
+			j = 1;
+			break;
+		}
+		}
+	}
+}
+void User::ProduceClass(User *&UserHead)
+{
+	User *head;
+	head = UserHead;
+		for (int i = 0;i < 4;i++)
+		{
+			User *ptr = NULL;
+			ptr = new StudentUser();
+			ptr->NextClass = UserHead;
+			UserHead = ptr;
+			UserHead->next = NULL;
+		}
+}
+void User::ReadReaderFile(User *&UserHead)
+{
+	User *ptr=NULL;
+	User *head = UserHead;
+	int variety;
+	fstream UserIn("D:\\LibraryManagementSystem\\reader.txt", ios::in);
+	if (!UserIn)
+	{
+		cout << "file not found";
+	}
+	else
+	{
+		while (!UserIn.eof())
+		{
+			UserIn >> variety;
+			switch(variety)
+			{
+			case 1:
+			{
+				ptr = new StudentUser();
+				UserIn >> ptr->UserMaxLoanNum;
+				UserIn >> ptr->UserBorrowNum;
+				UserIn >> ptr->UserName;
+				UserIn >> ptr->UserDepartment;
+				UserIn >> ptr->UserClass;
+				InsertBack(UserHead, ptr);
+				UserHead = head;
+				break;
+			}
+			case 2:
+			{
+				UserHead = UserHead->NextClass;
+				ptr = new TeacherUser();
+				UserIn >> ptr->UserMaxLoanNum;
+				UserIn >> ptr->UserBorrowNum;
+				UserIn >> ptr->UserName;
+				UserIn >> ptr->UserDepartment;
+				UserIn >> ptr->UserClass;
+				InsertBack(UserHead, ptr);
+				UserHead = head;
+				break;
+			}
+			case 3:
+			{
+				UserHead = UserHead->NextClass;
+				UserHead = UserHead->NextClass;
+				ptr = new TeacherUser();
+				UserIn >> ptr->UserMaxLoanNum;
+				UserIn >> ptr->UserBorrowNum;
+				UserIn >> ptr->UserName;
+				UserIn >> ptr->UserDepartment;
+				UserIn >> ptr->UserClass;
+				InsertBack(UserHead, ptr);
+				UserHead = head;
+				break;
+			}
+
+			}
+		}
+		
+	}
+}
+void User::WriteToReader(User *UserHead)
+{
+	fstream UserOut("D:\\LibraryManagementSystem\\reader.txt", ios::out);
+	User *head = UserHead;
+	/*for (int i = 0;i < 3;i++)
+	{
+		UserHead = UserHead->next;
+		while (UserHead != NULL)
+		{
+			UserOut << UserHead->UserMaxLoanNum << endl;
+			UserOut << UserHead->UserBorrowNum << endl;
+			UserOut << UserHead->UserName << endl;
+			UserOut << UserHead->UserDepartment << endl;
+			UserOut << UserHead->UserClass << endl;
+			UserHead = UserHead->next;
+		}
+		head = head->NextClass;
+		UserHead = head;
+	}*/
+	//学生
+	UserHead = UserHead->next;
+	while (UserHead != NULL)
+	{
+		UserOut << 1 << endl;
+		UserOut << UserHead->UserMaxLoanNum << endl;
+		UserOut << UserHead->UserBorrowNum << endl;
+		UserOut << UserHead->UserName << endl;
+		UserOut << UserHead->UserDepartment << endl;
+		UserOut << UserHead->UserClass<<endl;
+		UserHead = UserHead->next;
+	}
+	head = head->NextClass;
+	UserHead = head;
+	//老师
+	UserHead = UserHead->next;
+	while (UserHead != NULL)
+	{
+		UserOut << 2 << endl;
+		UserOut << UserHead->UserMaxLoanNum << endl;
+		UserOut << UserHead->UserBorrowNum << endl;
+		UserOut << UserHead->UserName << endl;
+		UserOut << UserHead->UserDepartment << endl;
+		UserOut << UserHead->UserClass << endl;
+		UserHead = UserHead->next;
+	}
+	head = head->NextClass;
+	UserHead = head;
+	//管理员
+	UserHead = UserHead->next;
+	while (UserHead->next != NULL)
+	{
+		UserOut << 3 << endl;
+		UserOut << UserHead->UserMaxLoanNum << endl;
+		UserOut << UserHead->UserBorrowNum << endl;
+		UserOut << UserHead->UserName << endl;
+		UserOut << UserHead->UserDepartment << endl;
+		UserOut << UserHead->UserClass<<endl;
+		UserHead = UserHead->next;
+	}
+	UserOut << 3 << endl;
+	UserOut << UserHead->UserMaxLoanNum << endl;
+	UserOut << UserHead->UserBorrowNum << endl;
+	UserOut << UserHead->UserName << endl;
+	UserOut << UserHead->UserDepartment << endl;
+	UserOut << UserHead->UserClass;
+	UserHead = UserHead->next;
+	//head = head->NextClass;
+	UserHead = head;
+
+
+}
+void User::ShowUser(User *UserHead)
+{
+	User *head = UserHead;
+	for (int i = 0;i < 4;i++)
+	{
+		UserHead = UserHead->next;
+		while (UserHead != NULL)
+		{
+			cout << UserHead->UserMaxLoanNum << endl;
+			cout << UserHead->UserBorrowNum << endl;
+			cout << UserHead->UserName << endl;
+			cout << UserHead->UserDepartment << endl;
+			cout << UserHead->UserClass << endl;
+			UserHead = UserHead->next;
+		}
+		head = head->NextClass;
+		UserHead = head;
+	}
+}
+void User::BorrowBook(User *&UserHead)
+{
+	//User *UserHead = NULL;
+	Book *BookHead = NULL;
+	BookHead->ProduceVariety(BookHead);
+	BookHead->ReadBooksFile(BookHead);
+	BookHead->ShowBook(BookHead);
+	//BookHead->InsertBook(BookHead);
+	User *head = UserHead;
+	head = head->next;
+	cout << "您还能借" << head->UserMaxLoanNum << "本书" << endl;
+	if (head->UserMaxLoanNum > 0)
+	{
+		BookHead->BorrowBook(BookHead, head->UserName);
+		
+		BookHead->ShowBook(BookHead);
+	}
+	else
+	{
+		cout << "您的借书限额已满" << endl;
+	}
+	BookHead->WriteToBooks(BookHead);
+}
+void User::Carry(User *&UserHead)
+{
+	User *head = UserHead;
+	Book *BookHead = NULL;
+	BookHead->ProduceVariety(BookHead);
+	BookHead->ReadBooksFile(BookHead);
+	BookHead->ShowBook(BookHead);
+	//BookHead->ModificationBook(BookHead);
+	BookHead->DeleteBook(BookHead);
+}
+
+void Menu0()
+{
+	cout << "---------------------------" << endl;
+	cout << "|" << "    1 用户登录           " << "|" << endl;
+	cout << "|" << "    2 管理员登录         " << "|" << endl;
+	cout << "|" << "    3 新用户注册         " << "|" << endl;
+	cout << "---------------------------" << endl;
+}
+int main()
+{
+	User *UserHead = NULL;
+	/*Book *BookHead = NULL;
+	BookHead->ProduceVariety(BookHead);
+	BookHead->ReadBooksFile(BookHead);
+	BookHead->ShowBook(BookHead);
+	BookHead->InsertBook(BookHead);
+	BookHead->InsertBook(BookHead);
+	BookHead->WriteToBooks(BookHead);*/
+	UserHead->ProduceClass(UserHead);
+	UserHead->ReadReaderFile(UserHead);
+	UserHead->ShowUser(UserHead);
+	//UserHead->BorrowBook(UserHead);
+	UserHead->Carry(UserHead);
+	/*UserHead->InsertUser(UserHead);
+	UserHead->ShowUser(UserHead);
+    UserHead->WriteToReader(UserHead);*/
+
+}
