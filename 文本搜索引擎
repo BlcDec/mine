@@ -1,0 +1,260 @@
+#include<iostream>
+#include<cstring>
+#include<string>
+using namespace std;
+class Node
+{
+private:
+	Node(string a)
+	{
+		key = a;
+		count = 1;
+		leftChild = NULL;
+		rightChild = NULL;
+	}
+	string key;
+	int count;
+	Node* leftChild;
+	Node* rightChild;
+	friend class Binary;
+};
+class Binary
+{
+private:
+	Node *root;
+public:
+	Binary()
+	{
+		root = NULL;
+	}
+	void dateDeal();
+	Node *find(const string,Node *&father, int &flag);//查找
+	void in_print(Node *temp);//中序遍历
+	bool insert(string a);//插入一个元素
+	string turn(string &a);//小写转大写
+	Node* delete_node(string word);
+	void plan();//执行
+};
+void Binary::dateDeal()
+{
+	string letter;
+	while (cin >> letter&&letter != "@")
+	{
+		insert(turn(letter));
+	}
+
+}
+string Binary::turn(string &letter)//大写转为小写
+{
+	string temp="";
+	for (int i = 0;i < (letter.length());i++)
+	{
+		if (letter[i] >= 'a'&&letter[i] <= 'z' || letter[i] >= 'A'&&letter[i] <= 'Z')
+		{
+			if (letter[i] >= 'a'&&letter[i] <= 'z')
+			{
+				temp += letter[i];
+			}
+			else if (letter[i] >= 'A'&&letter[i] <= 'Z')
+			{
+				temp += letter[i] + 32;
+			}
+		}
+	}
+	letter = temp;
+	return letter;
+}
+Node *Binary::find(const string word, Node *&father,int &flag)
+{
+	Node *temp = root;
+	while (temp != NULL&&(temp->key != word))
+	{
+		father = temp;
+		if (temp->key.compare(word) > 0)//比较大小key>word返回正数
+		{
+			temp = temp->rightChild;
+			flag = -1;
+		}
+		else if (temp->key.compare(word) < 0)
+		{
+			temp = temp->leftChild;
+			flag = 1;
+		}
+	}
+	return temp;
+}
+void Binary::in_print(Node *temp)
+{
+	if (temp)
+	{
+		in_print(temp->rightChild);
+		cout << temp->key << " " << temp->count << "\n";
+		in_print(temp->leftChild);
+	}
+
+}
+bool Binary::insert(string a)
+{
+	Node *temp = root;
+	Node *tempP = NULL;
+	int flag = 0;
+	if (root == NULL)
+	{
+		root = new Node(a);
+		return true;
+	}
+	else
+	{
+		temp= find(a,tempP,flag);
+		if (temp != NULL)
+		{
+			temp->count++;
+			return true;
+		}
+		else if (temp == NULL)//如果没有这个单词新建节点插入
+		{
+			Node *tempNode;
+			tempNode = new Node(a);
+			if (flag == -1)
+			{
+				tempP->rightChild = tempNode;
+			}
+			else if(flag==1)
+			{
+				tempP->leftChild = tempNode;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+Node* Binary::delete_node(string word)
+{
+	Node *temp = NULL;
+	Node *tempP = NULL;
+	int flag = 0;
+	temp = find(word,tempP,flag);
+	if (temp == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		if (temp->leftChild&&temp->rightChild)//左右孩子都不为空
+		{
+			Node *next = temp->leftChild;
+			Node *father = temp;//father为左子树最右节点的父节点
+			while (next->rightChild != NULL)//移动到左子树的最右边节点
+			{
+				father = next;
+				next = next->rightChild;
+			}//next为要删除的节点
+			temp->count = next->count;//交换节点数据
+			temp->key = next->key;
+			if (next == temp->leftChild)
+			{
+				temp->leftChild = next->leftChild;
+			}
+			else
+			{
+				father->rightChild = next->leftChild;
+			}
+			delete next;
+			return root;
+		}
+		else if (temp->leftChild)//右孩子为空
+		{
+			if (temp == root)
+			{
+				root = root->leftChild;
+			}
+			else if (tempP->leftChild == temp)//如果temp在tempP的左边
+			{
+				tempP->leftChild = temp->leftChild;
+			}
+			else if (tempP->rightChild == temp)//如果temp在tempP的右边
+			{
+				tempP->rightChild = temp->leftChild;
+			}
+			delete temp;
+			return tempP;
+		}
+		else if (temp->rightChild)//左孩子为空
+		{
+			if (temp == root)
+			{
+				root = root->rightChild;
+			}
+			else if (tempP->leftChild == temp)//如果temp在tempP的左边
+			{
+				tempP->leftChild = temp->rightChild;
+			}
+			else if (tempP->rightChild == temp)//如果temp在tempP的右边
+			{
+				tempP->rightChild = temp->rightChild;
+			}
+			delete temp;
+			return tempP;
+		}
+		else//左右孩子都为空
+		{
+			if (tempP->leftChild == temp)//如果temp在tempP的左边
+			{
+				tempP->leftChild = NULL;
+			}
+			else if (tempP->rightChild == temp)//如果temp在tempP的右边
+			{
+				tempP->rightChild = NULL;
+			}
+			delete temp;
+			return tempP;
+		}
+	}
+}
+void Binary::plan()
+{
+	char instruct;
+	while (cin >> instruct&&instruct != 'X')
+	{
+		if (instruct == 'T')//插入单词
+		{
+			dateDeal();
+		}
+		else if (instruct == 'V')//中序遍历
+		{
+			in_print(root);
+		}
+		else if (instruct == 'S')//删除节点
+		{
+			string word;
+			while (cin >> word&&word != "#")
+				delete_node(turn(word));
+
+		}
+		else if (instruct == 'Q')//查找单词
+		{
+			string letter;
+			Node *father = NULL;
+			Node *temp;
+			int flag = 0;
+			while (cin >> letter&&letter != "#")
+			{
+				 temp=find(turn(letter),father,flag);
+				if (temp != NULL)
+				{
+						cout << temp->key << " " << temp->count << endl;
+				}
+				else
+				{
+					cout << "-1" << endl;
+				}
+				temp= NULL;
+			}
+		}
+	}
+}
+int main()
+{
+	Binary A;
+	A.plan();
+}
