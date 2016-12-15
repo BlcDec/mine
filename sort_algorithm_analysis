@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<cstring>
 using namespace std;
 class SORTING_ALGORITHM_ANALYSIS
@@ -12,6 +12,9 @@ public:
 	void Get_array();
 	void Insert_sort();
 	void Shell_sort();
+	void Quick_sort();
+	int Partition(int r[], int first, int end);
+	void Quick_sort_part(int r[], int first, int end);
 	void plan();
 };
 void SORTING_ALGORITHM_ANALYSIS::Get_array()
@@ -20,8 +23,8 @@ void SORTING_ALGORITHM_ANALYSIS::Get_array()
 	int i = 1;
 	while (cin >> temp&&temp != -1)
 	{
-		pending_teatment_array[i] = temp;
-		i++;
+	pending_teatment_array[i] = temp;
+	i++;
 	}
 	n = i;
 }
@@ -29,7 +32,7 @@ void SORTING_ALGORITHM_ANALYSIS::Insert_sort()
 {
 	compear_frequency = 0;
 	move_frequency = 0;
-	int *array =new int[n];
+	int *array = new int[n];
 	memcpy(array, pending_teatment_array, 4 * n);
 	for (int i = 2;i < n;i++)//n-1次比较
 	{
@@ -55,7 +58,7 @@ void SORTING_ALGORITHM_ANALYSIS::Insert_sort()
 		cout << array[i] << " ";
 	}
 	cout << endl;
-	cout << compear_frequency << " " << move_frequency<<" 插入排序" << endl;
+	cout << compear_frequency << " " << move_frequency << " 插入排序" << endl;
 
 }
 void SORTING_ALGORITHM_ANALYSIS::Shell_sort()
@@ -71,21 +74,21 @@ void SORTING_ALGORITHM_ANALYSIS::Shell_sort()
 	cout << endl;
 	for (int d = 2;d >= 1;d = d / 2)//以增量为d进行直接插入排序
 	{
-			for (int i = d + 1;i < n;i++)
+		for (int i = d + 1;i < n;i++)
+		{
+			int j;
+			array[0] = array[i];//带插入元素暂存
+			move_frequency++;
+			//compear_frequency++;
+			for (j = i - d;j > 0 && array[0] < array[j];j = j - d)
 			{
-					int j;
-					array[0] = array[i];//带插入元素暂存
-					move_frequency++;
-					//compear_frequency++;
-					for (j = i - d;j > 0 && array[0] < array[j];j = j - d)
-					{
-						array[j + d] = array[j];//后移d的元素
-						compear_frequency++;
-						move_frequency++;
-					}
-					array[j + d] = array[0];
-					move_frequency++;
+				array[j + d] = array[j];//后移d的元素
+				compear_frequency++;
+				move_frequency++;
 			}
+			array[j + d] = array[0];
+			move_frequency++;
+		}
 	}
 	for (int i = 1;i < n;i++)
 	{
@@ -94,11 +97,74 @@ void SORTING_ALGORITHM_ANALYSIS::Shell_sort()
 	cout << endl;
 	cout << compear_frequency << " " << move_frequency << "  shell sort" << endl;
 }
+int  SORTING_ALGORITHM_ANALYSIS::Partition(int r[], int first, int end)
+{
+	int i = first, j = end;//初始化
+	while (i < j)
+	{
+		while (i < j&&r[i] <= r[j])
+		{
+			compear_frequency++;
+			j--;//右侧扫描
+		}
+		if (i < j)
+		{
+			r[i] = r[i] + r[j];//将较小值交换到前面
+			r[j] = r[i] - r[j];
+			r[i] = r[i] - r[j];
+			move_frequency += 3;
+			i++;
+		}
+		while (i < j&&r[i] <= r[j])
+		{
+			compear_frequency ++;
+			i++;//左侧扫描
+		}
+		if (i < j)
+		{
+			r[i] = r[i] + r[j];//将较大值交换到前面
+			r[j] = r[i] - r[j];
+			r[i] = r[i] - r[j];
+			move_frequency += 3;
+			j--;
+		}
+	}
+	return i;//以i为轴值记录的最终位置
+}
+void SORTING_ALGORITHM_ANALYSIS::Quick_sort_part(int r[], int first, int end)
+{
+	if (first < end)//区间长度大于一，执行一次划分，否则递归结束
+	{
+		int pivot = Partition(r, first, end);//一次划分 ???为什么是r
+		Quick_sort_part(r, first, pivot - 1);//递归对左侧快速排序
+		Quick_sort_part(r, pivot + 1, end);//递归对右侧快速排序
+	}
+}
+void SORTING_ALGORITHM_ANALYSIS::Quick_sort()
+{
+	compear_frequency = 0;
+	move_frequency = 0;
+	int *array = new int[n];
+	memcpy(array, pending_teatment_array, 4 * n);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] <<" ";
+	}
+	cout << endl;
+	Quick_sort_part(array, 1, n-1);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	cout << compear_frequency << " " << move_frequency << "  Quicksort" << endl;
+}
 void SORTING_ALGORITHM_ANALYSIS::plan()
 {
 	Get_array();
 	Insert_sort();
 	Shell_sort();
+	Quick_sort();
 }
 int main()
 {
