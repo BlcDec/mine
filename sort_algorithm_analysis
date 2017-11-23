@@ -1,0 +1,236 @@
+﻿#include<iostream>
+#include<cstring>
+using namespace std;
+class SORTING_ALGORITHM_ANALYSIS
+{
+private:
+	int n;
+	int pending_teatment_array[1000];
+	int compear_frequency;
+	int move_frequency;
+public:
+	void Get_array();
+	void Insert_sort();
+	void Shell_sort();
+	void Quick_sort();
+	int Partition(int r[], int first, int end);
+	void Quick_sort_part(int r[], int first, int end);
+	void Heap_shift(int r[], int k, int m);
+	void Heap_sort();
+	void plan();
+};
+void SORTING_ALGORITHM_ANALYSIS::Get_array()
+{
+	int temp;
+	int i = 1;
+	while (cin >> temp&&temp != -1)
+	{
+		pending_teatment_array[i] = temp;
+		i++;
+	}
+	n = i;
+}
+void SORTING_ALGORITHM_ANALYSIS::Insert_sort()
+{
+	compear_frequency = 0;
+	move_frequency = 0;
+	int *array = new int[n];
+	memcpy(array, pending_teatment_array, 4 * n);
+	for (int i = 2;i < n;i++)//n-1次比较
+	{
+		if (array[i] < array[i - 1])//若位置合适直接放下
+		{
+			int j;
+			array[0] = array[i];
+			move_frequency++;
+			compear_frequency++;
+			for (j = i - 1;array[0] < array[j];j--)//j作为哨兵，若无则j=0，必跳出
+			{
+				array[j + 1] = array[j];
+				compear_frequency++;
+				move_frequency++;
+			}
+			array[j + 1] = array[0];//放入
+			move_frequency++;
+		}
+		compear_frequency++;
+	}
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	cout << compear_frequency << " " << move_frequency << " 插入排序" << endl;
+	delete[]array;
+}
+void SORTING_ALGORITHM_ANALYSIS::Shell_sort()
+{
+	compear_frequency = 0;
+	move_frequency = 0;
+	int *array = new int[n];//0作为暂存单元
+	memcpy(array, pending_teatment_array, 4 * n);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	for (int d = 2;d >= 1;d = d / 2)//以增量为d进行直接插入排序
+	{
+		for (int i = d + 1;i < n;i++)
+		{
+			int j;
+			array[0] = array[i];//带插入元素暂存
+			move_frequency++;
+			//compear_frequency++;
+			for (j = i - d;j > 0 && array[0] < array[j];j = j - d)
+			{
+				array[j + d] = array[j];//后移d的元素
+				compear_frequency++;
+				move_frequency++;
+			}
+			array[j + d] = array[0];
+			move_frequency++;
+		}
+	}
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	cout << compear_frequency << " " << move_frequency << "  shell sort" << endl;
+	delete []array;
+}
+int  SORTING_ALGORITHM_ANALYSIS::Partition(int r[], int first, int end)
+{
+	int i = first, j = end;//初始化
+	while (i < j)
+	{
+		while (i < j&&r[i] <= r[j])
+		{
+			compear_frequency++;
+			j--;//右侧扫描
+		}
+		if (i < j)
+		{
+			r[i] = r[i] + r[j];//将较小值交换到前面
+			r[j] = r[i] - r[j];
+			r[i] = r[i] - r[j];
+			move_frequency += 3;
+			i++;
+		}
+		while (i < j&&r[i] <= r[j])
+		{
+			compear_frequency++;
+			i++;//左侧扫描
+		}
+		if (i < j)
+		{
+			r[i] = r[i] + r[j];//将较大值交换到前面
+			r[j] = r[i] - r[j];
+			r[i] = r[i] - r[j];
+			move_frequency += 3;
+			j--;
+		}
+	}
+	return i;//以i为轴值记录的最终位置
+}
+void SORTING_ALGORITHM_ANALYSIS::Quick_sort_part(int r[], int first, int end)
+{
+	if (first < end)//区间长度大于一，执行一次划分，否则递归结束
+	{
+		int pivot = Partition(r, first, end);//一次划分 ???为什么是r
+		Quick_sort_part(r, first, pivot - 1);//递归对左侧快速排序
+		Quick_sort_part(r, pivot + 1, end);//递归对右侧快速排序
+	}
+}
+void SORTING_ALGORITHM_ANALYSIS::Quick_sort()
+{
+	compear_frequency = 0;
+	move_frequency = 0;
+	int *array = new int[n];
+	memcpy(array, pending_teatment_array, 4 * n);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	Quick_sort_part(array, 1, n - 1);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	cout << compear_frequency << " " << move_frequency << "  Quicksort" << endl;
+	delete []array;
+}
+void SORTING_ALGORITHM_ANALYSIS::Heap_shift(int r[], int k, int m)
+{
+	int i = k;
+	int j = 2 * i;
+	while (j <= m)
+	{
+		if (j < m&&r[j] < r[j + 1])
+		{
+			compear_frequency++;
+			j++;
+		}
+		if (r[i] > r[j])
+		{
+			compear_frequency++;
+			break;
+		}
+		else
+		{
+			compear_frequency++;
+			r[i] = r[i] + r[j];
+			r[j] = r[i] - r[j];
+			r[i] = r[i] - r[j];//交换r[i]和r[j]
+			move_frequency += 3;
+			i = j;
+			j = i * 2;
+		}
+	}
+}
+void SORTING_ALGORITHM_ANALYSIS::Heap_sort()
+{
+	compear_frequency = 0;
+	move_frequency = 0;
+	int *array;
+	array = new int[n];
+	memcpy(array, pending_teatment_array, 4 * n);
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	for (int i = (n-1) / 2;i >= 1;i--)
+		Heap_shift(array, i, n-1);
+	for (int i = 1;i < n-1;i++)
+	{
+		array[1] =	array[1] + array[n-i];
+		array[n-i] = array[1] - array[n-i];
+		array[1] = array[1] - array[n -i];//交换arry[1]和arry[n-i]
+		move_frequency += 3;
+		
+		Heap_shift(array, 1, n - i-1);
+	}
+	for (int i = 1;i < n;i++)
+	{
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	cout << compear_frequency << " " << move_frequency << "  Heapsort" << endl;
+}
+void SORTING_ALGORITHM_ANALYSIS::plan()
+{
+	Get_array();
+	Insert_sort();
+	Shell_sort();
+	Quick_sort();
+	Heap_sort();
+}
+int main()
+{
+	SORTING_ALGORITHM_ANALYSIS TEST;
+	TEST.plan();
+}

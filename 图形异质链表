@@ -1,0 +1,956 @@
+#include<iostream>
+#include<fstream>
+#include<cmath>
+#include<ctime>
+#include<Windows.h>
+using namespace std;
+#define PI  3.1415929535
+void   Delay(int   time)//time*1000为秒数 
+{
+	clock_t   now = clock();
+
+	while (clock() - now   <   time);
+}
+BOOL SetConsoleColor(WORD wAttributes)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsole == INVALID_HANDLE_VALUE)
+		return FALSE;
+	return SetConsoleTextAttribute(hConsole, wAttributes);
+}
+class Shape
+{
+public:
+	/*double x, y, z;
+	Shape(double i = 0, double j = 0, double k = 0)
+	{
+	x = i;
+	y = j;
+	z = k;
+	}*/
+	virtual void showDate() = 0;
+	//void showDate(){};
+	//virtual void showDate(){};
+	virtual double reArea() = 0;
+	virtual double reVolume() = 0;
+	virtual  int showNature() = 0;
+	/*virtual int showToTxta() = 0;
+	virtual int showToTxtb() = 0;
+	virtual int showToTxtc() = 0;*/
+
+	/*double x, y, z;
+	void set_dim(double i = 0, double j = 0, double k = 0)
+	{
+	x = i;
+	y = j;
+	z = k;
+	}*/
+	Shape *next;
+};
+class TwoDimShape :public Shape
+{
+protected:
+	//double x,y,z;
+public:
+
+};
+class ThreeShape :public Shape
+{
+protected:
+	//double x,y,z;
+public:
+
+
+};
+class Cirle :public TwoDimShape
+{
+private:
+	double x, y, z;
+
+public:
+	/*void getcr()
+	{
+	cin>>x;
+	}*/
+	Cirle(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "圆的半径为：" << x << endl;
+	}
+	double reArea()
+	{
+		cout << "圆的面积为：";
+		return PI*x*x;
+	}
+	double reVolume() { return 0; }
+	int  showNature()
+	{
+		return 1;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+
+};
+class Elipse :public TwoDimShape //椭圆
+{
+private:
+	double x, y, z;
+public:
+	Elipse(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "椭圆的半轴：" << x << '\t' << "椭圆的半轴：" << y << '\n';
+	}
+	double  reArea()
+	{
+		cout << "椭圆的面积：";
+		return PI*x*y;
+	}
+	double reVolume() { return 0; }
+	int  showNature()
+	{
+		return 2;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+	double showToTxtb()
+	{
+		return y;
+	}
+};
+class Rectangle1 :public TwoDimShape //矩形
+{
+private:
+	double x, y, z;
+
+public:
+	Rectangle1(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "矩形的边长：" << x << '\t' << y << '\n';
+	}
+	double  reArea()
+	{
+		cout << "矩形的面积：";
+		return x*y;
+	}
+	double reVolume()
+	{
+		return 0;
+	}
+	int  showNature()
+	{
+		return 3;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+	double showToTxtb()
+	{
+		return y;
+	}
+};
+class Triangle :public TwoDimShape //三角形
+{
+private:
+	double x, y, z;
+
+public:
+	Triangle(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "三角形的三边长：";
+		cout << x << '\t' << y << '\t' << z << '\n';
+	}
+	double  reArea()
+	{
+		cout << "三角形的面积：";
+		double a = (x + y + z) / 2;
+		return sqrt(a*(a - x)*(a - y)*(a - z));
+	}
+	double reVolume()
+	{
+		return 0;
+	}
+	int  showNature()
+	{
+		return 4;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+	double showToTxtb()
+	{
+		return y;
+	}
+	double showToTxtc()
+	{
+		return z;
+	}
+};
+class Ball :public ThreeShape
+{
+private:
+	double x, y, z;
+
+public:
+	Ball(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "球的半径：";
+		cout << x << endl;
+	}
+	double reArea()
+	{
+		cout << "球的表面积：";
+		return 4 * PI*x*x;
+	}
+	double reVolume()
+	{
+		cout << "球的体积：";
+		return (4 * PI*x*x*x) / 3;
+	}
+	int  showNature()
+	{
+		return 5;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+};
+class Cylider :public ThreeShape  //圆柱体
+{
+private:
+	double x, y, z;
+
+public:
+	Cylider(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "圆柱的底面半径：" << x << '\t' << "圆柱的高：" << y << endl;
+	}
+	double reArea()
+	{
+		cout << "圆柱的表面积：";
+		return PI*x*x + 2 * PI*x*y;
+	}
+	double reVolume()
+	{
+		cout << "圆柱的体积：";
+		return PI*x*x*y;
+	}
+	int  showNature()
+	{
+		return 6;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+
+	double showToTxtb()
+	{
+		return y;
+	}
+};
+class RectangularParallelepiped :public ThreeShape //长方体
+{
+private:
+	double x, y, z;
+
+public:
+	RectangularParallelepiped(double i = 0, double j = 0, double k = 0)
+	{
+		x = i;
+		y = j;
+		z = k;
+	}
+	void showDate()
+	{
+		cout << "长方体的三边：";
+		cout << x << '\t' << y << '\t' << z << endl;
+	}
+	double reArea()
+	{
+		cout << "长方体的表面积：";
+		return 2 * x*y + 2 * x*z + 2 * y*z;
+	}
+	double reVolume()
+	{
+		cout << "长方体的体积：";
+		return x*y*z;
+	}
+	int  showNature()
+	{
+		return 7;
+	}
+	double showToTxta()
+	{
+		return x;
+	}
+	double showToTxtb()
+	{
+		return y;
+	}
+	double showToTxtc()
+	{
+		return z;
+	}
+};
+// 方法
+class List
+{
+private:
+
+public:
+	void Menu0();
+	void Menu();
+	void Menu1();
+	void readCreat(Shape *&shaHead);
+	void addFront(Shape *&h, Shape *&t);
+	void creatOneShape(Shape *&shaHead);
+	void creatList(Shape *&shaHead, int listnum);
+	void showList(Shape *&shaHead, Shape *&ptr);
+	void insertList(Shape *&shaHead, Shape *&p);
+	int creatSingalShape(Shape *&p);
+	int  carrySecondMenu1(Shape *&shaHead);
+	void deletNode(Shape *&shaHead, int n);
+	int  reverseList(Shape *&shaHead);
+	void writeToShape(Shape *&shaHead);
+
+};
+void List::Menu0()
+{
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY| FOREGROUND_GREEN | FOREGROUND_BLUE);
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), /*FOREGROUND_INTENSITY| */FOREGROUND_RED | FOREGROUND_BLUE);
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),/* FOREGROUND_INTENSITY |*/ FOREGROUND_RED | FOREGROUND_GREEN);
+	SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0);
+	cout << "---------------------------" << endl;
+	cout << "你想要读取上次文件还是新建？" << endl;
+	cout << "---------------------------" << endl;
+	cout << "|" << "    1 读取上次的文件      " << "|" << endl;
+	cout << "|" << "    2 新建链表            " << "|" << endl;
+	cout << "---------------------------" << endl;
+	SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+}
+void List::Menu()
+{
+
+	SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0);
+	cout << "--------------------" << endl;
+	cout << "|" << "1 建立圆形的节点  " << "|" << endl;
+	cout << "|" << "2 建立椭圆形的节点" << "|" << endl;
+	cout << "|" << "3 建立矩形的节点  " << "|" << endl;
+	cout << "|" << "4 建立三角形的节点" << "|" << endl;
+	cout << "|" << "5 建立球体的节点  " << "|" << endl;
+	cout << "|" << "6 建立圆柱体的节点" << "|" << endl;
+	cout << "|" << "7 建立长方体的节点" << "|" << endl;
+	cout << "--------------------" << endl;
+	cout << "------请输入--------" << endl;
+	SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+
+}
+void List::Menu1()
+{
+
+	SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0);
+	cout << "--------------------" << endl;
+	cout << "|" << "1 插入节点        " << "|" << endl;
+	cout << "|" << "2 删除节点        " << "|" << endl;
+	cout << "|" << "3 反转链表        " << "|" << endl;
+	cout << "|" << "4 遍历链表        " << "|" << endl;
+	cout << "|" << "5 保存链表        " << "|" << endl;
+	cout << "|" << "6 退出            " << "|" << endl;
+	cout << "--------------------" << endl;
+	cout << "------请输入--------" << endl;
+	SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+
+}
+void List::readCreat(Shape *&shaHead)
+{
+	Shape *t;
+	Shape *readptr;
+	fstream in("E:\\shape.txt", ios::in);
+	//in.seekg(0, ios::beg);
+	int tip;
+	if (!in)
+	{
+		cout << "file not found!" << endl;
+
+	}
+	else
+	{
+		while (!in.eof())
+		{
+			in >> tip;
+			switch (tip)
+			{
+			case 1:
+			{
+				double a;
+				in >> a;
+				readptr = new Cirle(a);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			case 2:
+			{
+				double a, b;
+				in >> a;
+				in >> b;
+				readptr = new Elipse(a, b);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+
+			}
+			case 3:
+			{
+				double a, b;
+				in >> a;
+				in >> b;
+				readptr = new Rectangle1(a, b);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			case 4:
+			{
+				double a, b, c;
+				in >> a;
+				in >> b;
+				in >> c;
+				readptr = new Triangle(a, b, c);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			case 5:
+			{
+				double a;
+				in >> a;
+				readptr = new Ball(a);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			case 6:
+			{
+				double a, b;
+				in >> a;
+				in >> b;
+				readptr = new Cylider(a, b);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			case 7:
+			{
+				double a, b, c;
+				in >> a;
+				in >> b;
+				in >> c;
+				readptr = new RectangularParallelepiped(a, b, c);
+				addFront(shaHead, readptr);
+				//showList(shaHead, t);
+				break;
+			}
+			}
+		}
+	    //showList(shaHead, t);
+		cout << "读入数据成功" << endl;
+
+	}
+	in.close();
+}
+void List::addFront(Shape * &h, Shape * &t)
+{
+	t->next = h;
+	h = t;
+}
+void List::creatOneShape(Shape *&shaHead)
+{
+	Shape *ptr;
+	int n;
+	Menu();
+	cin >> n;
+	switch (n)
+	{
+	case 1:
+	{
+		double a;
+		cout << "请输入圆的半径：" << endl;
+		cin >> a;
+		ptr = new Cirle(a);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 2:
+	{
+		double a, b;
+		cout << "请输入椭圆的长轴和半长轴：" << endl;
+		cin >> a >> b;
+		ptr = new Elipse(a, b);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 3:
+	{
+		double a, b;
+		cout << "请输入矩形的长和宽：" << endl;
+		cin >> a >> b;
+		ptr = new Rectangle1(a, b);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 4:
+	{
+		double a, b, c;
+		cout << "请输入三角形的三边：" << endl;
+		cin >> a >> b >> c;
+		ptr = new Triangle(a, b, c);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 5:
+	{
+		double a;
+		cout << "请输入求的半径：" << endl;
+		cin >> a;
+		ptr = new Ball(a);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 6:
+	{
+		double a, b;
+		cout << "请输入圆柱的底面半径和高：" << endl;
+		cin >> a >> b;
+		ptr = new Cylider(a, b);
+		addFront(shaHead, ptr);
+		break;
+	}
+	case 7:
+	{
+		double a, b, c;
+		cout << "请输入长方体的长、宽、高：" << endl;
+		cin >> a >> b >> c;
+		ptr = new RectangularParallelepiped(a, b, c);
+		addFront(shaHead, ptr);
+		break;
+	}
+	}
+
+}
+void List::creatList(Shape *&shaHead, int listnum)
+{
+	for (int i = 0;i < listnum;i++)
+	{
+		creatOneShape(*&shaHead);
+	}
+	/*Shape *q;
+	q = shaHead;
+	while (q)
+	{
+	q->showDate();
+	cout << endl;
+	cout << q->reArea() << endl;
+	cout << q->reVolume() << endl;
+	q = q->next;
+	}*/
+}
+void List::showList(Shape *&shaHead, Shape *&p)
+{
+	p = shaHead;
+	while (p)
+	{
+		p->showDate();
+		cout << endl;
+		cout << p->reArea() << endl;
+		cout << p->reVolume() << endl;
+		p = p->next;
+	}
+	Delay(1000);
+
+}
+void List::insertList(Shape *&shaHead, Shape *&p)
+{
+	Shape *shains;
+	cout << "你想要插入第几个节点前面？";
+	int a;
+	cin >> a;
+	shains = shaHead;
+	if (a == 1)
+	{
+		p->next = shaHead;
+		shaHead = p;
+	}
+	else
+	{
+		for (int i = 0;i < a - 2;i++)
+		{
+			shains = shains->next;
+		}
+		p->next = shains->next;//记得测试一下先后顺序
+		shains->next = p;	//和这个
+	}
+}
+int  List::creatSingalShape(Shape *&p)
+{
+	int n;
+	Menu();
+	cin >> n;
+	switch (n)
+	{
+	case 1:
+	{
+		double a;
+		cout << "请输入圆的半径：" << endl;
+		cin >> a;
+		p = new Cirle(a);
+		return 1;
+		break;
+	}
+	case 2:
+	{
+		double a, b;
+		cout << "请输入椭圆的长轴和半长轴：" << endl;
+		cin >> a >> b;
+		p = new Elipse(a, b);
+		return 1;
+
+		break;
+	}
+	case 3:
+	{
+		double a, b;
+		cout << "请输入矩形的长和宽：" << endl;
+		cin >> a >> b;
+		p = new Rectangle1(a, b);
+		return 1;
+		break;
+	}
+	case 4:
+	{
+		double a, b, c;
+		cout << "请输入三角形的三边：" << endl;
+		cin >> a >> b >> c;
+		p = new Triangle(a, b, c);
+		return 1;
+		break;
+	}
+	case 5:
+	{
+		double a;
+		cout << "请输入求的半径：" << endl;
+		cin >> a;
+		p = new Ball(a);
+		return 1;
+		break;
+	}
+	case 6:
+	{
+		double a, b;
+		cout << "请输入圆柱的底面半径和高：" << endl;
+		cin >> a >> b;
+		p = new Cylider(a, b);
+		return 1;
+		break;
+	}
+	case 7:
+	{
+		double a, b, c;
+		cout << "请输入长方体的长、宽、高：" << endl;
+		cin >> a >> b >> c;
+		p = new RectangularParallelepiped(a, b, c);
+		return 1;
+		break;
+	}
+	default:
+	{
+		return 0;
+	}
+	}
+}
+void List::deletNode(Shape *&shaHead, int n)
+{
+	Shape *p, *q, *r;
+	p = shaHead;
+	r = p;
+	int j = 0;
+	if (r == NULL)
+	{
+		cout << "已经没有节点了" << endl;
+	}
+	else
+	{
+		while (r->next != NULL)
+		{
+			r = r->next;
+			j++;
+		}
+	}
+	if (shaHead == NULL)
+	{
+	}
+	else if (n == 1)
+	{
+		q = p->next;
+		delete p;
+		shaHead = q;
+		cout << "------删除节点成功-----" << endl;
+
+	}
+	else if (n>0 && n <= j)
+	{
+		for (int i = 0;i < n - 2;i++)
+		{
+			p = p->next;
+		}
+		q = p->next;
+		p->next = q->next;
+		delete q;
+		cout << "------删除节点成功-----" << endl;
+	}
+	else
+	{
+		cout << "输入错误请重新输入" << endl;
+	}
+}
+int List::reverseList(Shape *&shaHead)
+{
+	Shape *p1;
+	Shape *p2;
+	Shape *p3;
+	if (shaHead == NULL)
+	{
+		cout << "您还没有建立链表." << endl;
+		return 0;
+	}
+	else if (shaHead->next == NULL)
+	{
+		cout << "您就一个节点翻转啥。" << endl;
+		return 0;
+	}
+	p1 = shaHead;
+	p2 = p1->next;
+	p3 = p2->next;
+	p1->next = NULL;
+	while (p3 != NULL)
+	{
+		p2->next = p1;
+		p1 = p2;
+		p2 = p3;
+		p3 = p3->next;
+	}
+	p2->next = p1;
+	delete p3;
+	shaHead = p2;
+	cout << "------反转链表成功-----" << endl;
+	return 0;
+
+}
+int List::carrySecondMenu1(Shape *&shaHead)
+{
+	int n;
+	Menu1();
+	cin >> n;
+	Shape *q;
+	if (n == 1)
+	{
+		Shape *insertsha;
+		if (creatSingalShape(insertsha))
+		{
+			insertList(shaHead, insertsha);
+			//showList(shaHead,q);
+			cout << "------创建节点成功-----" << endl;
+			return 0;
+		}
+		else
+		{
+			cout << "输入错误请重新输入" << endl;
+			return 0;
+		}
+	}
+	else if (n == 2)
+	{
+		int n;
+		cout << "你要删除第几个节点？";
+		cin >> n;
+		deletNode(shaHead, n);
+		//showList(shaHead, q);
+		//cout << "------删除节点成功-----" << endl;
+		return 0;
+
+
+	}
+	else if (n == 3)
+	{
+		reverseList(shaHead);
+		//showList(shaHead, q);
+		//cout << "------反转链表成功-----" << endl;
+		return 0;
+
+	}
+	else if (n == 4)
+	{
+		showList(shaHead, q);
+		return 0;
+	}
+	else if (n == 5)
+	{
+		writeToShape(shaHead);
+		cout << "写入成功" << endl;
+		return 0;
+	}
+	else if (n == 6)
+	{
+		exit(0);
+	}
+	else
+	{
+		cout << "输入错误,请重新输入" << endl;
+
+	}
+	return 0;
+}
+void List::writeToShape(Shape *&shaHead)
+{
+	fstream out("E:\\shape.txt", ios::out);
+	Shape *head = shaHead;
+	while (head != NULL)
+	{
+		if (head->showNature() == 1)
+		{
+			out << head->showNature() << endl;
+			out << ((Cirle  *)head)->showToTxta() << endl;
+			//out.close();
+		}
+		else if (head->showNature() == 2)
+		{
+			out << head->showNature() << endl;
+			out << ((Elipse  *)head)->showToTxta() << endl;
+			out << ((Elipse  *)head)->showToTxtb() << endl;
+			//out.close();
+		}
+		else if (head->showNature() == 3)
+		{
+			out << head->showNature() << endl;
+			out << ((Rectangle1  *)head)->showToTxta() << endl;
+			out << ((Rectangle1  *)head)->showToTxtb() << endl;
+			//out.close();
+		}
+		else if (head->showNature() == 4)
+		{
+			out << head->showNature() << endl;
+			out << ((Triangle  *)head)->showToTxta() << endl;
+			out << ((Triangle  *)head)->showToTxtb() << endl;
+			out << ((Triangle  *)head)->showToTxtc() << endl;
+
+			//out.close();
+		}
+		else if (head->showNature() == 5)
+		{
+			out << head->showNature() << endl;
+			out << ((Ball  *)head)->showToTxta() << endl;
+			//out.close();
+		}
+		else if (head->showNature() == 6)
+		{
+			out << head->showNature() << endl;
+			out << ((Cylider  *)head)->showToTxta() << endl;
+			out << ((Cylider  *)head)->showToTxtb() << endl;
+			//out.close();
+		}
+		else if (head->showNature() == 7)
+		{
+			out << head->showNature() << endl;
+			out << ((RectangularParallelepiped  *)head)->showToTxta() << endl;
+			out << ((RectangularParallelepiped  *)head)->showToTxtb() << endl;
+			out << ((RectangularParallelepiped  *)head)->showToTxtb() << endl;
+
+			//out.close();
+		}
+		head = head->next;
+	}
+	out.close();
+
+}
+int main()
+{
+	system("color 0F");
+	List list;
+	Shape *shaHead = NULL, *p;
+	list.Menu0();
+	int status;
+	cin >> status;
+	do
+	{
+		if (status == 1)
+		{
+			list.readCreat(shaHead);
+			while (1)
+			{
+				list.carrySecondMenu1(shaHead);
+				Delay(1000);
+			}
+		}
+		else if (status == 2)
+		{
+			int shapenum;
+			cout << "你想要创建的链表的个数：";
+			cin >> shapenum;
+			list.creatList(shaHead, shapenum);
+			list.writeToShape(shaHead);
+			while (1)
+			{
+				list.carrySecondMenu1(shaHead);
+				//Delay(1000);
+			}
+		}
+		else
+			cout << "输入错误请重新输入" << endl;
+		continue;
+	} while (cin >> status);
+
+}
