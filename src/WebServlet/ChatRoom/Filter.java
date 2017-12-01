@@ -1,4 +1,4 @@
-//package WebServlet;
+//package WebServlet.ChatRoom;
 //
 //import javax.servlet.*;
 //import javax.servlet.annotation.WebFilter;
@@ -25,10 +25,10 @@
 //        response.setContentType("text/html;charset=utf-8");
 //        arg2.doFilter(arg0, arg1);//在页面跳转之前执行此语句前面的代码，执行完页面的代码之后，在执行后面的语句
 //        System.out.println("第一个字符过滤器");
-//        System.out.println("end------doFilter--FirstFilter军军");39     }
+//        System.out.println("end------doFilter--FirstFilter");39     }
 //
 //    @Override
 //    public void init(FilterConfig filterConfig) throws ServletException {
-//        System.out.println("init----FirstFilter 军军");
+//        System.out.println("init----FirstFilter ");
 //    }
 //}

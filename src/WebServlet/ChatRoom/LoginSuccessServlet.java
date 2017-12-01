@@ -27,20 +27,16 @@ public class LoginSuccessServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         out.println("<html><head><title>聊天室</title>");
+        out.println("<meta http-equiv=\"content-type\" content=\"txt/html; charset=utf-8\" />");
         out.println("<style type='text/css'>#iframe1{width:600px;height:200px;}" +
                 "iframe{width:600px;height:200px;margin-bottom:20px;}</style>");
         out.println("</head>");
-        out.println("<center><h2><b>欢迎使用聊天系统</b></h2>");
+        out.println("<center><h2><b>多人聊天系统</b></h2>");
         out.println("<lable>当前用户：" + username
-                + "</lable><a href=\"LoginOut\"> 退出登录</a><br>");
-        out.println("<iframe src='MessageBoxServlet' id='iframe1'></iframe>");
+                + "</lable><a href=\"LogoutServlet\"> 退出登录</a><br>");
+        out.println("<iframe src='MessageServlet' id='iframe1'></iframe>");
         out.println("<br>");
-        out.println("<iframe src='TalkServlet'></iframe><br>");
-        /*out.println("<frameset rows=\"50%,25%\">");
-        out.println("<frame name=\"message\" src=\"Messagebox\" />");
-        out.println("<frame name=\"uinput\" src=\"Talk\"/>");
-        out.println("</frameset>");
-        */
+        out.println("<iframe src='SendServlet'></iframe><br>");
         out.println("</body></html>");
 
     }

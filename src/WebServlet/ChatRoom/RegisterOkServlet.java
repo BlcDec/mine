@@ -9,8 +9,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "LogoutServlet",urlPatterns = "/LogoutServlet")
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "RegisterOkServlet",urlPatterns = "/RegisterOkServlet")
+public class RegisterOkServlet extends HttpServlet {
 
 
 
@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
 
 
 
-        out.println("<html><head><title>注销登陆</title>");
+        out.println("<html><head><title>注册失败</title>");
         out.println("<meta http-equiv=\"refresh\" content =\"1;url=LoginServlet\">");
         out.println("<style>");
         out.println("body{text-align:center}");
@@ -39,7 +39,7 @@ public class LogoutServlet extends HttpServlet {
         out.println("</style>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>哈？走啦？</h1>");
+        out.println("<h2>注册成功，请登录</h2>");
         out.println("</body>");
         out.println("</html>");
     }

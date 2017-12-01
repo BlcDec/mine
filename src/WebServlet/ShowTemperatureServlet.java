@@ -38,7 +38,7 @@ public class ShowTemperatureServlet extends HttpServlet {
 	    out.println("��ǰ�������£�"+Temperature+"���϶�");
 	    if(oldTemperature!=null){
 	    	out.println("<BR>");
-		    out.println("����ǰ���£�"+oldTemperature+"���϶�");
+		    out.println("����sdf���£�"+oldTemperature+"���϶�");
         	
         }
 	    out.println("</BODY></HTML>");

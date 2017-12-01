@@ -12,8 +12,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet(name = "TalkServlet",urlPatterns = "/TalkServlet")
-public class TalkServlet extends HttpServlet {
+@WebServlet(name = "SendServlet",urlPatterns = "/SendServlet")
+public class SendServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
@@ -21,11 +21,11 @@ public class TalkServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("UserName");// 将获取的对象强制类型转换为字符串
+        String username = (String) session.getAttribute("UserName");
 
         out.println("<html><body>");
         out.println("<lable>当前用户：" + username + "</lable><br>");
-        out.println("<form action=\"TalkServlet\" method=\"post\">");
+        out.println("<form action=\"SendServlet\" method=\"post\">");
         out.println("<div><textarea name=\"userMessages\" cols=\"50\" style=\"height:100px;\"></textarea></div>");
         out.println("<div><input type=\"submit\" id=\"submit\" value=\"发送\"/>");
         out.println("<input type=\"reset\" id=\"reset\" value=\"清空输入\"/></div>");
@@ -33,47 +33,41 @@ public class TalkServlet extends HttpServlet {
         out.println("</body></html>");
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
+
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
         request.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
-        ServletContext application = this.getServletContext();// 获取上下文信息
+        ServletContext application = this.getServletContext();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 日期格式
-        Date currentTime = new Date();// 得到当前的系统时间
-        String str_date1 = formatter.format(currentTime);// 将日期时间格式化 str_date1
-        String username = (String) session.getAttribute("UserName");// 将获取的对象强制类型转换为字符串
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentTime = new Date();
+        String time = formatter.format(currentTime);
+        String username = (String) session.getAttribute("UserName");
 
         PrintWriter out = response.getWriter();
 
-        String mywords = request.getParameter("userMessages");// 获取提交信息的内容
-        // mywords
-        application.log(mywords);// 在控制台中将提交的内容显示出来
+        String mywords = request.getParameter("userMessages");
+        application.log(mywords);
         if (mywords == null) {
             mywords = "系统提示：可以聊天";
             application.setAttribute("words", mywords + "\n");
         } else if (mywords != null) {
-            // int len_mywords = mywords.length();
-            // application.log("字节长度："+len_mywords);
-            mywords = username + ":" + mywords + ":" + str_date1;// 给内容添上其他信息。
-            application.log(mywords);//在控制台信息中查看内容
-            Object obj = application.getAttribute("words");// 上下文获取 的都是一个对象
+            mywords = time+":" +username+ ":" + mywords;
+            application.log(mywords);
+            Object obj = application.getAttribute("words");
             if (obj == null) {
-                application.setAttribute("words", mywords + "\n");// 设置成全局变量
+                application.setAttribute("words", mywords + "\n");
             } else {
                 application.setAttribute("words", obj.toString() + mywords
-                        + "\n");// 当获取的上下文对象不为空时，需要将前面的信息也显示出来
+                        + "\n");
             }
         }
 
         out.println("<html><body>");
         out.println("<lable>当前用户：" + username + "</lable><br>");
-        out.println("<form action=\"TalkServlet\" method=\"post\">");
+        out.println("<form action=\"SendServlet\" method=\"post\">");
         out.println("<div><textarea name=\"userMessages\" cols=\"50\" style=\"height:100px;\"></textarea></div>");
         out.println("<div><input type=\"submit\" id=\"submit\" value=\"发送\"/>");
         out.println("<input type=\"reset\" id=\"reset\" value=\"清空输入\"/></div>");

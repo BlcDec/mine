@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "MessageBoxServlet",urlPatterns = "/MessageBoxServlet")
-public class MessageBoxServlet extends HttpServlet {
+@WebServlet(name = "MessageServlet",urlPatterns = "/MessageServlet")
+public class MessageServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request,
                                   HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -27,14 +27,14 @@ public class MessageBoxServlet extends HttpServlet {
 
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MessageBoxServlet</title>");
-            out.println("<meta http-equiv=\"refresh\" content =\"2;url=MessageBoxServlet\">");
+            out.println("<title>Servlet MessageServlet</title>");
+            out.println("<meta http-equiv=\"refresh\" content =\"2;url=MessageServlet\">");
             out.println("</head>");
             out.println("<body>");
             out.println("<p>当前在线：");
             out.println(temp);
             out.println("人</p>");
-            out.println("<textarea name=\"MessageBoxServlet\" cols=\"100\" words=\"400\" style=\"height:400px;\">");
+            out.println("<textarea name=\"MessageServlet\" cols=\"100\" words=\"400\" style=\"height:400px;\">");
             out.println(words);
             out.println("</textarea>");
             out.println("</body>");
@@ -61,5 +61,5 @@ public class MessageBoxServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 }
