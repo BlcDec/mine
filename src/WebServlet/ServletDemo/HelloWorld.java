@@ -1,4 +1,4 @@
-package WebServlet; /**
+package WebServlet.ServletDemo; /**
  * Created by KAI on 2017/11/18.
  */
 import javax.servlet.ServletException;
