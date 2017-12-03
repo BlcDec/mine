@@ -20,10 +20,10 @@ public class LoginVerificationServlet extends HttpServlet {
         MysqlConnector mysqlConnector=new MysqlConnector();
 
         if (username != null && mysqlConnector.exeQuery(username,password)) {
-            Cookie cookie1 = new Cookie("remname", username);
-            Cookie cookie2 = new Cookie("rempwd", password);
-            cookie1.setMaxAge(60 * 60 * 24 * 7);
-            cookie2.setMaxAge(60 * 60 * 24 * 7);
+            Cookie cookie1 = new Cookie("username", username);
+            Cookie cookie2 = new Cookie("userpassword", password);
+            cookie1.setMaxAge(7);
+            cookie2.setMaxAge(7);
             response.addCookie(cookie1);
             response.addCookie(cookie2);
             session.setAttribute("UserName", username);
