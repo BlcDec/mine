@@ -95,7 +95,7 @@
                                         return true;
                                     }
                                 }
-                                return false
+                                return false;
                             }
                             function selectCheck(name)
                             {
@@ -125,7 +125,7 @@
                                         return false;
                                     }
                                 }
-                                else if(!selectCheck('test03')){
+                                else if(!selectRadio('test03')){
                                     if (confirm("第三题没选提交表单?")) {
                                         return true;
                                     } else {
