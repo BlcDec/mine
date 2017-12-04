@@ -56,12 +56,12 @@
 
                         <div id="showTimes"></div>
                         <%
-                            long current_time=System.currentTimeMillis();
-
+                           // long current_time=System.currentTimeMillis();
                             //long  end_time=1337875200000l;
 
                             //long time=current_time;
-                            long time=600000;
+                            //long time=600000;
+                            long time=5000;
                         %>
                         <script>
                             var second = <%= time / 1000%>; // 剩余秒数
@@ -71,12 +71,17 @@
                                 var mi = (second - s) / 60 % 60; // 分钟
                                 var h =  ((second - s) / 60 - mi ) / 60 % 24; // 小时
                                 var d =  (((second - s) / 60 - mi ) / 60 - h ) / 24 // 天
+
+                                if(s===0&&mi===0&&h===0&&d===0){
+                                    document.ansForm.submit();
+                                }
                                 return "剩余：" + d + "天" + h + "小时" + mi + "分钟" + s + "秒";
                             }
                             //然后写一个定时器
                             window.setInterval(function(){
                                 second --;
-                                document.getElementById("showTimes").innerHTML = toDays ();
+
+                                document.getElementById("showTimes").innerHTML = toDays();
                             }, 1000);
                         </script>
                         <%
@@ -143,7 +148,7 @@
                             }
 
                         </script>
-                        <form action="JudgeServlet" method="post">
+                        <form name="ansForm" action="JudgeServlet" method="post">
                             <% str="填空题 \n"; %>
                             <h3><%=str%></h3>
                             1、MVC的三个组成部分分别是:模型、视图、

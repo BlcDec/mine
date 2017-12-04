@@ -16,7 +16,7 @@ public class JudgeServlet extends HttpServlet {
         response.setContentType("text/html:charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String ans;
-        String []temp;
+        String []temp=null;
         ans=request.getParameter("test01");
         Cookie[]cookies=request.getCookies();
         Cookie cookie=null;
@@ -36,27 +36,33 @@ public class JudgeServlet extends HttpServlet {
         }
         ans="";
         temp=request.getParameterValues("test02");
-        for(int i=0;i<temp.length;i++){
-            ans+=temp[i];
-        }
-        if(ans.equals("A")){
-            score+=25;
-            System.out.println("test02");
+        if(temp!=null) {
+            for (int i = 0; i < temp.length; i++) {
+                ans += temp[i];
+            }
+            if (ans.equals("A")) {
+                score += 25;
+                System.out.println("test02");
+            }
         }
         ans="";
         temp=request.getParameterValues("test03");
-        for(int i=0;i<temp.length;i++){
-            ans+=temp[i];
+        if(temp!=null) {
+            for (int i = 0; i < temp.length; i++) {
+                ans += temp[i];
 
-        }
-        if(ans.equals("ABD")){
-            score+=25;
-            System.out.println("test03");
+            }
+            if (ans.equals("ABD")) {
+                score += 25;
+                System.out.println("test03");
+            }
         }
         ans=request.getParameter("test04");
-        if(ans.equals("false")){
-            score+=25;
-            System.out.println("test04");
+        if(ans!=null) {
+            if (ans.equals("false")) {
+                score += 25;
+                System.out.println("test04");
+            }
         }
         request.setAttribute("score",score);
         request.getRequestDispatcher("/Score.jsp").forward(request,response);
