@@ -61,7 +61,7 @@
 
                             //long time=current_time;
                             //long time=600000;
-                            long time=5000;
+                            long time=600000;
                         %>
                         <script>
                             var second = <%= time / 1000%>; // 剩余秒数
