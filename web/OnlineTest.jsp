@@ -148,7 +148,7 @@
                             }
 
                         </script>
-                        <form name="ansForm" action="JudgeServlet" method="post">
+                        <form id="ansForm" name="ansForm" action="JudgeServlet" method="post">
                             <% str="填空题 \n"; %>
                             <h3><%=str%></h3>
                             1、MVC的三个组成部分分别是:模型、视图、
@@ -175,7 +175,7 @@
                             <input type="radio" name="test04" value="true" />包括
                             <input type="radio" name="test04" value="false" />不包括
                             <center>
-                                <input type="submit" value="提交" name="submit" onclick="return validate()" />
+                                <input type="submit" value="提交" name="sub" onclick="return validate()" />
                             </center>
                         </form>
                     </div>
